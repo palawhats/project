@@ -1,2 +1,2 @@
 vercel
-https://project-8b7w.vercel.app/
+https://project-yzxza-ten.vercel.app/
