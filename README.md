@@ -1,2 +1,2 @@
 vercel
-https://vercel.com/palawhat/project
+https://project-ehs3aa.vercel.app/
