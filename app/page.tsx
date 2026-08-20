@@ -5,166 +5,208 @@ import { useApp, Mission } from "@/context/AppContext";
 
 export default function HomePage() {
   const { points, completedMissions, missions, isLoading } = useApp();
-  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [activeTab, setActiveTab] = useState<string>("ALL");
 
-  const categories = ["All", "Photo", "QR Code", "GPS"];
+  const categories = ["ALL", "Photo", "QR Code", "GPS"];
 
-  const filteredMissions = activeCategory === "All"
+  const filteredMissions = activeTab === "ALL"
     ? missions
-    : missions.filter((m) => m.category === activeCategory);
+    : missions.filter((m) => m.category === activeTab);
 
   return (
     <div className="space-y-6">
-      {/* User Dashboard & Gamification Card */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900 to-slate-900/90 border border-slate-800 p-6 md:p-7 shadow-2xl">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      
+      {/* Title */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard Overview</h1>
+          <p className="text-xs text-slate-400 mt-0.5">ยินดีต้อนรับกลับมา! ตรวจสอบภารกิจและแต้มสะสมของคุณ</p>
+        </div>
+        <Link
+          href="/missions/create"
+          className="px-4 py-2 rounded-xl text-xs font-bold bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/20 transition"
+        >
+          + สร้างภารกิจ
+        </Link>
+      </div>
 
-        <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
-          {/* User Info & Streak */}
-          <div className="space-y-3 w-full md:w-auto">
-            <div className="flex items-center gap-2">
-              <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full text-[11px] font-bold flex items-center gap-1">
-                🔥 5 วันติดกัน! (Streak)
-              </span>
-              <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
-                Level 3 Challenger
-              </span>
-            </div>
-
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-              ทำภารกิจวันนี้ <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">รับแต้มคูณ 2x</span>
-            </h1>
-
-            {/* Level XP Bar */}
-            <div className="max-w-md space-y-1.5">
-              <div className="flex justify-between text-[11px] text-slate-400 font-medium">
-                <span>ความคืบหน้า Level 4</span>
-                <span className="text-slate-300">750 / 1,000 XP</span>
-              </div>
-              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
-                <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full w-[75%] transition-all duration-500" />
-              </div>
-            </div>
+      {/* Top Stat Cards (เลียนแบบแถบบนสุดในรูป reference) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        {/* Card 1: Main Balance Card */}
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-semibold text-slate-400">💳 Total Balance</span>
+            <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">PTS</span>
           </div>
 
-          {/* Points Counter Badge */}
-          <div className="w-full md:w-auto bg-slate-950/80 border border-slate-800/80 p-4 rounded-2xl flex items-center justify-between md:justify-start gap-5 shadow-inner">
-            <div>
-              <p className="text-slate-400 text-[11px] font-semibold uppercase tracking-wider">แต้มของคุณ</p>
-              <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="text-3xl font-black text-amber-400 tracking-tight">
-                  {points.toLocaleString()}
-                </span>
-                <span className="text-xs font-bold text-slate-400">PTS</span>
-              </div>
+          <div>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+              {points.toLocaleString()} <span className="text-sm font-bold text-slate-400">PTS</span>
+            </h2>
+            <p className="text-xs font-semibold text-emerald-500 mt-1">
+              +14.5% <span className="text-slate-400 font-normal">จากสัปดาห์ที่แล้ว</span>
+            </p>
+          </div>
+
+          {/* Multi-color Progress bar เหมือนในภาพ Extej */}
+          <div className="space-y-1.5">
+            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
+              <div className="w-[50%] bg-amber-400" />
+              <div className="w-[30%] bg-indigo-500" />
+              <div className="w-[20%] bg-emerald-400" />
             </div>
+            <div className="flex justify-between text-[10px] font-bold text-slate-400">
+              <span className="text-amber-500">● Photo</span>
+              <span className="text-indigo-500">● QR Code</span>
+              <span className="text-emerald-500">● GPS</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 2: Mission Completed Stat */}
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-semibold text-slate-400">🎯 ภารกิจที่สำเร็จ</span>
+            <span className="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-md">+5 เดือนนี้</span>
+          </div>
+
+          <div>
+            <h3 className="text-3xl font-black text-slate-900">
+              {completedMissions.length} <span className="text-sm font-bold text-slate-400">/ {missions.length}</span>
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">ทำสำเร็จแล้ว {Math.round((completedMissions.length / (missions.length || 1)) * 100)}% ของทั้งหมด</p>
+          </div>
+
+          <div className="flex gap-2 pt-2">
             <Link
               href="/store"
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 text-xs font-extrabold transition shadow-lg shadow-amber-500/20 active:scale-95"
+              className="flex-1 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold text-center shadow-sm transition"
             >
-              ร้านค้า 🛒
+              แลกของรางวัล
             </Link>
           </div>
         </div>
+
+        {/* Card 3: Quick Action Card */}
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-semibold text-slate-400">🔥 Daily Streak</span>
+            <span className="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-md">Active</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-500 flex items-center justify-center text-2xl font-black">
+              ⚡
+            </div>
+            <div>
+              <p className="text-lg font-black text-slate-900">5 วันต่อเนื่อง!</p>
+              <p className="text-xs text-slate-400">เข้าใช้งานวันพรุ่งนี้เพื่อรับ +50 PTS</p>
+            </div>
+          </div>
+
+          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-orange-500 w-[70%]" />
+          </div>
+        </div>
+
       </div>
 
-      {/* Filter Category Pills */}
-      <div className="flex items-center justify-between gap-4 overflow-x-auto pb-1 scrollbar-none">
-        <div className="flex items-center gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                activeCategory === cat
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105"
-                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
-              }`}
-            >
-              {cat === "All" ? "✨ ทั้งหมด" : cat === "Photo" ? "📷 ถ่ายภาพ" : cat === "QR Code" ? "📱 สแกน QR" : "📍 เช็คอิน GPS"}
-            </button>
-          ))}
-        </div>
-        <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-          {filteredMissions.length} ภารกิจ
-        </span>
-      </div>
+      {/* Main Content Section (Cards & Filters) */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-6">
+        
+        {/* Header & Filter Tabs */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <h3 className="text-lg font-bold text-slate-900">รายการภารกิจ (Active Quests)</h3>
+            <p className="text-xs text-slate-400">เลือกภารกิจที่คุณต้องการเข้าร่วมเพื่อรับคะแนน</p>
+          </div>
 
-      {/* Mission Cards Feed */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-80 rounded-2xl bg-slate-900/60 animate-pulse border border-slate-800" />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {filteredMissions.map((mission: Mission) => {
-            const isDone = completedMissions.includes(mission.id);
-
-            return (
-              <div
-                key={mission.id}
-                className="group bg-slate-900/40 hover:bg-slate-900 border border-slate-800/80 hover:border-indigo-500/40 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 flex flex-col justify-between"
+          {/* Time / Filter Selector Pills (เลียนแบบ 1D 7D 1M ในรูป) */}
+          <div className="flex bg-slate-100 p-1 rounded-xl gap-1 self-start sm:self-auto">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                  activeTab === cat
+                    ? "bg-white text-orange-500 shadow-sm"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
               >
-                <div>
-                  {/* Card Banner Image */}
-                  <div className="relative h-44 w-full overflow-hidden bg-slate-950">
-                    <img
-                      src={mission.image}
-                      alt={mission.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-
-                    {/* Category Tag */}
-                    <span className="absolute top-3 left-3 backdrop-blur-md bg-slate-950/70 border border-white/10 text-indigo-300 text-[10px] font-bold px-2.5 py-1 rounded-lg">
-                      {mission.category}
-                    </span>
-
-                    {/* Completion Tag */}
-                    {isDone && (
-                      <span className="absolute top-3 right-3 backdrop-blur-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-lg">
-                        ✓ สำเร็จแล้ว
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-4 space-y-2">
-                    <h3 className="font-bold text-slate-100 text-sm line-clamp-1 group-hover:text-indigo-300 transition">
-                      {mission.title}
-                    </h3>
-                    <p className="text-slate-400 text-xs flex items-center gap-1 line-clamp-1">
-                      <span className="text-slate-500">📍</span> {mission.location}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Card Action & Reward */}
-                <div className="p-4 pt-0 flex items-center justify-between border-t border-slate-800/40 mt-3 pt-3">
-                  <div className="flex items-center gap-1">
-                    <span className="text-xs font-semibold text-slate-400">รางวัล</span>
-                    <span className="text-sm font-black text-amber-400">+{mission.points}</span>
-                    <span className="text-[10px] text-slate-500 font-bold">PTS</span>
-                  </div>
-
-                  <Link
-                    href={`/missions/${mission.id}`}
-                    className={`text-xs px-3.5 py-2 rounded-xl font-bold transition-all active:scale-95 ${
-                      isDone
-                        ? "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                        : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30"
-                    }`}
-                  >
-                    {isDone ? "ดูผลงาน" : "ทำภารกิจ 🚀"}
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-      )}
+
+        {/* Mission Cards Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 rounded-2xl bg-slate-100 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {filteredMissions.map((mission: Mission) => {
+              const isDone = completedMissions.includes(mission.id);
+
+              return (
+                <div
+                  key={mission.id}
+                  className="bg-slate-50/70 hover:bg-white border border-slate-200/80 rounded-2xl p-4 flex flex-col justify-between transition-all duration-200 hover:shadow-md group"
+                >
+                  <div className="space-y-3">
+                    {/* Image */}
+                    <div className="relative h-36 w-full rounded-xl overflow-hidden bg-slate-200">
+                      <img
+                        src={mission.image}
+                        alt={mission.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      />
+                      <span className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm">
+                        {mission.category}
+                      </span>
+                    </div>
+
+                    {/* Info */}
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-sm line-clamp-1 group-hover:text-orange-500 transition">
+                        {mission.title}
+                      </h4>
+                      <p className="text-slate-400 text-xs mt-0.5 line-clamp-1">
+                        📍 {mission.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Card Footer */}
+                  <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block font-semibold">รางวัล</span>
+                      <span className="text-base font-black text-orange-500">+{mission.points} PTS</span>
+                    </div>
+
+                    <Link
+                      href={`/missions/${mission.id}`}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+                        isDone
+                          ? "bg-slate-200 text-slate-500"
+                          : "bg-orange-500 hover:bg-orange-600 text-white shadow-sm"
+                      }`}
+                    >
+                      {isDone ? "ทำแล้ว" : "เริ่มภารกิจ"}
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+      </div>
+
     </div>
   );
 }

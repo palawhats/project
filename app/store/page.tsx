@@ -27,22 +27,22 @@ export default function StorePage() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 border border-purple-500/20 p-6 md:p-8 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0b140e] via-[#08110b] to-[#040805] border border-emerald-900/40 p-6 md:p-8 shadow-2xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <span className="text-xs font-bold text-purple-300 bg-purple-500/20 border border-purple-500/30 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
               🎁 Reward Center
             </span>
             <h1 className="text-2xl md:text-3xl font-extrabold text-white mt-2">
               แลกของรางวัลสุดพรีเมียม
             </h1>
-            <p className="text-slate-400 text-xs mt-1">ใช้ PTS ที่สะสมจากการทำภารกิจมาแลกของขวัญและคูปองส่วนลดได้ทันที</p>
+            <p className="text-zinc-400 text-xs mt-1">นำ Green PTS ที่สะสมไว้มาแลกของรางวัลได้ฟรี</p>
           </div>
 
-          <div className="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
+          <div className="bg-[#030604]/90 border border-emerald-900/60 p-4 rounded-2xl flex items-center gap-4">
             <div>
-              <p className="text-slate-400 text-[10px] font-semibold uppercase">แต้มที่ใช้ได้</p>
-              <p className="text-2xl font-black text-amber-400">{points.toLocaleString()} PTS</p>
+              <p className="text-emerald-500/80 text-[10px] font-bold uppercase">แต้มคงเหลือ</p>
+              <p className="text-2xl font-black text-emerald-400">{points.toLocaleString()} PTS</p>
             </div>
           </div>
         </div>
@@ -56,8 +56,8 @@ export default function StorePage() {
             onClick={() => setFilter(cat)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               filter === cat
-                ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 scale-105"
-                : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/20 scale-105"
+                : "bg-[#0b140e] border border-emerald-950 text-zinc-400 hover:text-emerald-300"
             }`}
           >
             {cat === "All" ? "✨ ทั้งหมด" : cat === "Drink" ? "☕ เครื่องดื่ม" : cat === "Gadget" ? "🎒 สินค้าพรีเมียม" : "🎟️ คูปอง & ส่วนลด"}
@@ -74,26 +74,26 @@ export default function StorePage() {
           return (
             <div
               key={item.id}
-              className="bg-slate-900/50 hover:bg-slate-900 border border-slate-800/80 hover:border-purple-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 shadow-lg"
+              className="bg-[#09100b]/60 hover:bg-[#0c160f] border border-emerald-950 hover:border-emerald-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 shadow-lg"
             >
               <div className="space-y-4">
-                <div className="h-28 rounded-xl bg-slate-950 flex items-center justify-center text-5xl shadow-inner border border-slate-800/60">
+                <div className="h-28 rounded-xl bg-[#030604] flex items-center justify-center text-5xl shadow-inner border border-emerald-950">
                   {item.image}
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center text-[10px] font-semibold text-slate-400 mb-1">
-                    <span className="text-purple-400 font-bold">{item.category}</span>
-                    <span>คงเหลือ {item.stock} ชิ้น</span>
+                  <div className="flex justify-between items-center text-[10px] font-semibold text-zinc-400 mb-1">
+                    <span className="text-emerald-400 font-bold">{item.category}</span>
+                    <span>เหลือ {item.stock} ชิ้น</span>
                   </div>
-                  <h3 className="font-bold text-slate-100 text-sm line-clamp-2">{item.title}</h3>
+                  <h3 className="font-bold text-zinc-100 text-sm line-clamp-2">{item.title}</h3>
                 </div>
               </div>
 
-              <div className="mt-5 space-y-3 pt-3 border-t border-slate-800/60">
+              <div className="mt-5 space-y-3 pt-3 border-t border-emerald-950/60">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-xs text-slate-400 font-medium">ราคาแลก</span>
-                  <span className="text-lg font-black text-amber-400">{item.cost} PTS</span>
+                  <span className="text-xs text-zinc-400 font-medium">ราคาแลก</span>
+                  <span className="text-lg font-black text-emerald-400">{item.cost} PTS</span>
                 </div>
 
                 <button
@@ -101,13 +101,13 @@ export default function StorePage() {
                   disabled={isRedeemed || !canAfford}
                   className={`w-full py-2.5 rounded-xl text-xs font-bold transition active:scale-95 ${
                     isRedeemed
-                      ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                      ? "bg-zinc-900 text-zinc-600 border border-zinc-800 cursor-not-allowed"
                       : canAfford
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white shadow-lg shadow-purple-600/25"
-                      : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                      ? "bg-gradient-to-r from-emerald-500 to-green-500 hover:brightness-110 text-black shadow-lg shadow-emerald-500/20"
+                      : "bg-zinc-900 text-zinc-600 border border-zinc-800 cursor-not-allowed"
                   }`}
                 >
-                  {isRedeemed ? "✓ แลกแล้ว" : canAfford ? "แลกของรางวัล 🎁" : "แต้มสะสมไม่พอ"}
+                  {isRedeemed ? "✓ แลกแล้ว" : canAfford ? "แลกของรางวัล 🎁" : "แต้มไม่พอ"}
                 </button>
               </div>
             </div>

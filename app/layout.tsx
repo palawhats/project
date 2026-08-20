@@ -7,77 +7,130 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "QuestPulse - O2O Quest Platform",
-  description: "พิชิตภารกิจ รับแต้ม แลกของรางวัลสุดพรีเมียม",
+  title: "QuestPulse - Gamified Dashboard",
+  description: "ระบบบริหารจัดการภารกิจและแลกของรางวัล O2O",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="th" className="dark">
-      <body className={`${inter.className} bg-[#0b0f19] text-slate-100 min-h-screen pb-20 md:pb-8 antialiased selection:bg-indigo-500 selection:text-white`}>
+    <html lang="th">
+      <body className={`${inter.className} bg-[#F4F5F9] text-slate-800 min-h-screen antialiased`}>
         <AppProvider>
-          {/* Ambient Lighting FX */}
-          <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[350px] bg-gradient-to-b from-indigo-600/15 via-purple-600/5 to-transparent blur-3xl pointer-events-none -z-10" />
+          <div className="flex min-h-screen">
+            
+            {/* Sidebar ด้านซ้าย (สไตล์ Extej Dashboard) */}
+            <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200/80 flex-col justify-between p-5 fixed h-full z-30">
+              <div className="space-y-6">
+                
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-3 px-2 py-1">
+                  <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center text-white font-black text-lg shadow-md shadow-orange-500/30">
+                    ❖
+                  </div>
+                  <span className="text-xl font-bold text-slate-900 tracking-tight">
+                    Quest<span className="text-orange-500">Pulse</span>
+                  </span>
+                </Link>
 
-          {/* Desktop & Mobile Header */}
-          <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0b0f19]/80 border-b border-slate-800/60">
-            <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-              <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[1px] shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition">
-                  <div className="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center font-bold text-base">
-                    ⚡
+                {/* Sidebar Navigation */}
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">PAGES</p>
+                    <nav className="space-y-1">
+                      <Link
+                        href="/"
+                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-sm bg-orange-500 text-white shadow-md shadow-orange-500/25 transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span>🎯</span>
+                          <span>ภารกิจทั้งหมด</span>
+                        </div>
+                        <span className="text-xs bg-orange-600 px-2 py-0.5 rounded-md">6</span>
+                      </Link>
+
+                      <Link
+                        href="/store"
+                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span>🎁</span>
+                          <span>ร้านค้าของรางวัล</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="/missions/create"
+                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span>➕</span>
+                          <span>สร้างภารกิจใหม่</span>
+                        </div>
+                      </Link>
+                    </nav>
+                  </div>
+
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">SYSTEM</p>
+                    <nav className="space-y-1 text-sm font-medium text-slate-500">
+                      <a href="#" className="flex items-center gap-3 px-3.5 py-2.5 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition">
+                        <span>📊</span> รายงานสรุป
+                      </a>
+                      <a href="#" className="flex items-center gap-3 px-3.5 py-2.5 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition">
+                        <span>⚙️</span> ตั้งค่าระบบ
+                      </a>
+                    </nav>
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-base font-black tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
-                    QuestPulse
-                  </span>
-                  <span className="text-[9px] font-medium text-indigo-400 -mt-1 tracking-wider uppercase">Beta v2.0</span>
-                </div>
-              </Link>
-
-              {/* Quick Actions (Desktop Navigation) */}
-              <nav className="hidden md:flex items-center gap-2">
-                <Link href="/" className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 transition">
-                  🎯 ภารกิจ
-                </Link>
-                <Link href="/store" className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 transition">
-                  🎁 ร้านค้า
-                </Link>
-                <Link
-                  href="/missions/create"
-                  className="ml-2 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 hover:opacity-90 active:scale-95 transition"
-                >
-                  + สร้างภารกิจ
-                </Link>
-              </nav>
-            </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="max-w-5xl mx-auto px-4 pt-6">{children}</main>
-
-          {/* Mobile Bottom Navigation Bar (แท็บล่างสุดสำหรับมือถือ) */}
-          <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0b0f19]/90 border-t border-slate-800/80 px-6 py-2">
-            <div className="flex justify-around items-center">
-              <Link href="/" className="flex flex-col items-center gap-1 text-indigo-400 font-medium text-[11px]">
-                <span className="text-lg">🎯</span>
-                <span>ภารกิจ</span>
-              </Link>
-              <Link href="/store" className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 font-medium text-[11px]">
-                <span className="text-lg">🎁</span>
-                <span>ร้านค้า</span>
-              </Link>
-              <Link href="/missions/create" className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 font-medium text-[11px]">
-                <div className="w-10 h-10 -mt-5 rounded-full bg-indigo-600 border-4 border-[#0b0f19] flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-indigo-600/40">
-                  +
-                </div>
-                <span>สร้าง</span>
-              </Link>
-              <div className="flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] cursor-not-allowed opacity-60">
-                <span className="text-lg">🔥</span>
-                <span>อันดับ</span>
               </div>
+
+              {/* User Quick Info */}
+              <div className="border-t border-slate-100 pt-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-600 font-bold flex items-center justify-center text-sm">
+                  AR
+                </div>
+                <div className="text-xs">
+                  <p className="font-bold text-slate-800">Austin Robertson</p>
+                  <p className="text-slate-400">Challenger Pro</p>
+                </div>
+              </div>
+            </aside>
+
+            {/* Main Area */}
+            <div className="flex-1 lg:ml-64 flex flex-col min-w-0">
+              
+              {/* Header ด้านบน */}
+              <header className="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between sticky top-0 z-20">
+                {/* Search Bar */}
+                <div className="relative w-full max-w-sm">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-sm">🔍</span>
+                  <input
+                    type="text"
+                    placeholder="ค้นหาภารกิจ, รางวัล..."
+                    className="w-full pl-9 pr-4 py-1.5 bg-slate-100/70 border-none rounded-xl text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                  />
+                </div>
+
+                {/* Right Profile & Notifications */}
+                <div className="flex items-center gap-4">
+                  <button className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 text-sm">
+                    🔔
+                  </button>
+                  <button className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 text-sm">
+                    ✉️
+                  </button>
+                  <div className="h-6 w-[1px] bg-slate-200" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-700">🇹🇭 TH</span>
+                  </div>
+                </div>
+              </header>
+
+              {/* Content Body */}
+              <main className="p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
+                {children}
+              </main>
+
             </div>
           </div>
         </AppProvider>
