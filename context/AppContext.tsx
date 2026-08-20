@@ -4,12 +4,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export interface Mission {
   id: string;
   title: string;
-  category: "QR Code" | "Photo" | "GPS";
-  points: number;
+  category: string;
   location: string;
-  participants: number;
+  points: number;
+  description?: string;
   image: string;
-  description: string;
 }
 
 interface AppContextType {
@@ -18,94 +17,75 @@ interface AppContextType {
   redeemedRewards: string[];
   missions: Mission[];
   isLoading: boolean;
-  completeMission: (id: string, pts: number) => Promise<boolean>;
-  addMission: (newMission: Omit<Mission, "id" | "participants">) => Promise<boolean>;
-  redeemReward: (rewardId: string, cost: number) => Promise<{ success: boolean; message: string }>; // เพิ่ม Type
+  completeMission: (id: string, points: number) => Promise<void>;
+  redeemReward: (id: string, cost: number) => Promise<{ success: boolean; message: string }>;
+  createMission: (missionData: Omit<Mission, "id">) => void; // เพิ่มนิยามประเภทฟังก์ชัน
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [points, setPoints] = useState<number>(0);
+  const [points, setPoints] = useState<number>(1250);
   const [completedMissions, setCompletedMissions] = useState<string[]>([]);
   const [redeemedRewards, setRedeemedRewards] = useState<string[]>([]);
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch("/api/missions");
-      if (res.ok) {
-        const data = await res.json();
-        setMissions(data.missions);
-        setPoints(data.user.points);
-        setCompletedMissions(data.user.completedMissions);
-        setRedeemedRewards(data.user.redeemedRewards);
-      }
-    } catch (err) {
-      console.error("Failed to load initial data", err);
-    } finally {
-      setIsLoading(false);
+  const [missions, setMissions] = useState<Mission[]>([
+    {
+      id: "m1",
+      title: "เช็คอินคาเฟ่พรีเมียม รับส่วนลดทันที",
+      category: "Photo",
+      location: "สยามสแควร์ ซอย 7",
+      points: 150,
+      description: "ถ่ายภาพเครื่องดื่มคู่กับบรรยากาศร้าน แล้วอัปโหลดเพื่อยืนยันสิทธิ์",
+      image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800",
+    },
+    {
+      id: "m2",
+      title: "สแกน QR Code หน้าเคาน์เตอร์บริการ",
+      category: "QR Code",
+      location: "เซ็นทรัลเวิลด์ ชั้น 3",
+      points: 100,
+      description: "สแกน QR Code ที่ตั้งอยู่บริเวณเคาน์เตอร์เพื่อสะสมแต้มพิเศษ",
+      image: "https://images.unsplash.com/photo-1595079672139-cee4c06cdc92?q=80&w=800",
+    },
+    {
+      id: "m3",
+      title: "เช็คอิน GPS ร่วมกิจกรรมความสะอาดชุมชน",
+      category: "GPS",
+      location: "สวนลุมพินี กรุงเทพฯ",
+      points: 300,
+      description: "เดินทางไปยังจุดทำกิจกรรมและเปิดระบบ GPS เพื่อยืนยันพิกัด",
+      image: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?q=80&w=800",
+    },
+  ]);
+
+  const completeMission = async (id: string, earnedPoints: number) => {
+    if (!completedMissions.includes(id)) {
+      setCompletedMissions((prev) => [...prev, id]);
+      setPoints((prev) => prev + earnedPoints);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const addMission = async (newMissionData: Omit<Mission, "id" | "participants">): Promise<boolean> => {
-    try {
-      const res = await fetch("/api/missions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newMissionData),
-      });
-
-      if (res.ok) {
-        await fetchData();
-        return true;
-      }
-      return false;
-    } catch (err) {
-      console.error("Failed to add mission", err);
-      return false;
+  const redeemReward = async (id: string, cost: number) => {
+    if (points < cost) {
+      return { success: false, message: "คะแนนสะสมของคุณไม่เพียงพอ" };
     }
+    if (redeemedRewards.includes(id)) {
+      return { success: false, message: "คุณเคยแลกรับของรางวัลนี้ไปแล้ว" };
+    }
+    setPoints((prev) => prev - cost);
+    setRedeemedRewards((prev) => [...prev, id]);
+    return { success: true, message: "แลกของรางวัลสำเร็จ!" };
   };
 
-  const completeMission = async (id: string, pts: number): Promise<boolean> => {
-    try {
-      const res = await fetch(`/api/missions/${id}/complete`, { method: "POST" });
-      if (res.ok) {
-        const data = await res.json();
-        setPoints(data.points);
-        setCompletedMissions(data.completedMissions);
-        return true;
-      }
-      return false;
-    } catch (err) {
-      console.error("Failed to complete mission", err);
-      return false;
-    }
-  };
-
-  // เพิ่มฟังก์ชัน redeemReward
-  const redeemReward = async (rewardId: string, cost: number) => {
-    try {
-      const res = await fetch("/api/rewards/redeem", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rewardId, cost }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setPoints(data.points);
-        setRedeemedRewards(data.redeemedRewards);
-        return { success: true, message: data.message };
-      }
-      return { success: false, message: data.message || "เกิดข้อผิดพลาด" };
-    } catch (err) {
-      return { success: false, message: "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้" };
-    }
+  // เพิ่มฟังก์ชันสำหรับสร้างภารกิจใหม่
+  const createMission = (missionData: Omit<Mission, "id">) => {
+    const newMission: Mission = {
+      ...missionData,
+      id: `m_${Date.now()}`,
+    };
+    setMissions((prev) => [newMission, ...prev]);
   };
 
   return (
@@ -117,8 +97,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         missions,
         isLoading,
         completeMission,
-        addMission,
-        redeemReward, // ส่งลง Value
+        redeemReward,
+        createMission,
       }}
     >
       {children}
@@ -128,6 +108,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
 export function useApp() {
   const context = useContext(AppContext);
-  if (!context) throw new Error("useApp must be used within AppProvider");
+  if (!context) {
+    throw new Error("useApp must be used within an AppProvider");
+  }
   return context;
 }

@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AppProvider>
           <div className="flex min-h-screen">
             
-            {/* Sidebar ด้านซ้าย (สไตล์ Extej Dashboard) */}
+            {/* Sidebar ด้านซ้าย (ตัดส่วน SYSTEM ออกแล้ว) */}
             <aside className="hidden lg:flex w-64 bg-white border-r border-slate-200/80 flex-col justify-between p-5 fixed h-full z-30">
               <div className="space-y-6">
                 
@@ -33,55 +33,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Link>
 
                 {/* Sidebar Navigation */}
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">PAGES</p>
-                    <nav className="space-y-1">
-                      <Link
-                        href="/"
-                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-sm bg-orange-500 text-white shadow-md shadow-orange-500/25 transition"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span>🎯</span>
-                          <span>ภารกิจทั้งหมด</span>
-                        </div>
-                        <span className="text-xs bg-orange-600 px-2 py-0.5 rounded-md">6</span>
-                      </Link>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">PAGES</p>
+                  <nav className="space-y-1">
+                    <Link
+                      href="/"
+                      className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold text-sm bg-orange-500 text-white shadow-md shadow-orange-500/25 transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span>🎯</span>
+                        <span>ภารกิจทั้งหมด</span>
+                      </div>
+                      <span className="text-xs bg-orange-600 px-2 py-0.5 rounded-md">6</span>
+                    </Link>
 
-                      <Link
-                        href="/store"
-                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span>🎁</span>
-                          <span>ร้านค้าของรางวัล</span>
-                        </div>
-                      </Link>
+                    <Link
+                      href="/store"
+                      className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span>🎁</span>
+                        <span>ร้านค้าของรางวัล</span>
+                      </div>
+                    </Link>
 
-                      <Link
-                        href="/missions/create"
-                        className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span>➕</span>
-                          <span>สร้างภารกิจใหม่</span>
-                        </div>
-                      </Link>
-                    </nav>
-                  </div>
-
-                  <div>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">SYSTEM</p>
-                    <nav className="space-y-1 text-sm font-medium text-slate-500">
-                      <a href="#" className="flex items-center gap-3 px-3.5 py-2.5 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition">
-                        <span>📊</span> รายงานสรุป
-                      </a>
-                      <a href="#" className="flex items-center gap-3 px-3.5 py-2.5 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition">
-                        <span>⚙️</span> ตั้งค่าระบบ
-                      </a>
-                    </nav>
-                  </div>
+                    <Link
+                      href="/missions/create"
+                      className="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span>➕</span>
+                        <span>สร้างภารกิจใหม่</span>
+                      </div>
+                    </Link>
+                  </nav>
                 </div>
+
               </div>
 
               {/* User Quick Info */}
