@@ -1,17 +1,15 @@
 ## vercel link
 https://project-yzxza-ten.vercel.app/
 
-## ภาพแอปพลิเคชัน QuestPulse
+# ภาพแอปพลิเคชัน QuestPulse
 
-### Dashboard Overview
+## Dashboard Overview
 <img width="1919" height="940" alt="image" src="https://github.com/user-attachments/assets/b348754b-8bd7-4a8d-b110-0edd2911220e" />
-_____________________________________________________________________________________________________________________
 
-### Rewards Store
+## Rewards Store
 <img width="1919" height="943" alt="image" src="https://github.com/user-attachments/assets/613b0e7a-5557-43fa-94f5-5bee2a918910" />
-_____________________________________________________________________________________________________________________
 
-### New Quest
+## New Quest
 <img width="1919" height="941" alt="image" src="https://github.com/user-attachments/assets/2698fdd2-8f3e-4b2d-95c8-4319c121a4d3" />
 
 # QuestPulse
