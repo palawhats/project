@@ -1,6 +1,3 @@
-## vercel link
-https://project-yzxza-ten.vercel.app/
-
 # ภาพแอปพลิเคชัน QuestPulse
 
 ## Dashboard Overview
